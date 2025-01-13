@@ -1,0 +1,33 @@
+h1 {
+  color: white;
+  background-color: rebeccapurple;
+}
+
+h2 {
+  color: gold;
+}
+
+.about-heading {
+  background-color: rebeccapurple; 
+}
+
+img {
+  max-width: 150px;
+}
+
+.about-area {
+  background-color: #ddd;
+}
+
+.alert {
+  color: blue;
+  font-size: larger;
+  font-family: "Impact";
+}
+.success {
+  color: green;
+}
+.failure {
+  color: red;
+}
+
