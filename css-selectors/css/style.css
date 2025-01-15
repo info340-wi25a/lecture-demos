@@ -6,8 +6,40 @@ header {
   margin-bottom: 1em;
 }
 
-h2 {
-  color: rebeccapurple;
+h2, h3, .purple-text {
+  color: purple;
+}
+
+/* h3 {
+  color: purple;
+}
+
+.purple-text {
+  color: purple;
+} */
+
+header p {
+  font-size: 1.5em;
+}
+
+.about-section p {
+  font-family: "Papyrus";
+}
+
+.about-section h2:hover {
+  font-size: 2em;
+}
+
+.about-section {
+
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:visited {
+  color: blue;
 }
 
 p {
@@ -24,4 +56,9 @@ img {
 .about-section {
   background-color: #eee;
   padding: .25em .5em;
+}
+
+.link-section {
+  background-color: lightskyblue;
+  text-align: center;
 }
