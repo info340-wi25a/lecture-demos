@@ -24,15 +24,27 @@ nav ul {
 
 nav li {
   display: inline-block;
+  border: 1px solid white;
+  padding: 1em;
+
 }
 
 nav a {
   color: white;
 }
 
+/* main layout */
+main {
+  /* display: flex; */
+}
+
+
 /* about section */
 .about-section {
   background-color: #f8f8f8;
+  flex-basis: 300px;
+  /* margin-left: 2em; */
+  order: 2;
 }
 
 .about-section img {
@@ -41,8 +53,19 @@ nav a {
 
 
 /* topics cards */
+.card-deck {
+  /* display: flex; */
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 .topics-section .card {
   border: 1px solid black;
+}
+
+.topics-section .card-firebase {
+  flex-grow: 1;
+  display: flex;
 }
 
 .topics-section img {
@@ -52,4 +75,27 @@ nav a {
 /* other */
 footer {
   font-size: smaller;
+}
+
+/* if (width is AT LEAST 576px) */
+@media (min-width: 576px) {
+
+  body {
+    background-color: lightpink;
+  }
+
+  .card-deck {
+    display: flex;
+    background-color: white;
+  }
+
+  .card {
+    flex-basis: 50%;
+  }
+}
+
+@media (min-width: 992px) {
+  .card {
+    flex-basis: 33%;
+  }
 }
