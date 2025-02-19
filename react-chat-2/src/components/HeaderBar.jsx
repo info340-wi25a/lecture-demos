@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const DEFAULT_USERS = [
   {userId: null, userName: null, userImg: '/img/null.png'}, //null user
@@ -9,6 +9,8 @@ const DEFAULT_USERS = [
 
 export function HeaderBar(props) {
 
+  const {currentUser, howToChangeUser} = props;
+
   //event handler
   const handleClick = (event) => {
     const whichUser = event.currentTarget.name //access button, not image
@@ -16,11 +18,19 @@ export function HeaderBar(props) {
 
     console.log(selectedUserObj);
     //do something with userObj!
+
+    howToChangeUser(selectedUserObj);
+
   }
 
   //for convenience
   const userButtons = DEFAULT_USERS.map((userObj) => {
     let classListString = "btn user-icon"
+
+    if(userObj.userId == currentUser.userId) {
+      classListString += " highlighted";
+    }
+
 
     return (
       <button className={classListString} key={userObj.userName} 
