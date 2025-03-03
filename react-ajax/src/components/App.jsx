@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //example GitHub repo data
 const EXAMPLE_DATA = [
@@ -9,17 +9,93 @@ const EXAMPLE_DATA = [
 
 
 function App(props) {
-  const [stateData, setStateData] = useState(EXAMPLE_DATA);
+  const [stateData, setStateData] = useState([]);
   //control form
-  const [queryInput, setQueryInput] = useState('');
+  const [queryInput, setQueryInput] = useState('bootstrap');
+
+  const initialValues = props.value;
+
+
+  useEffect(function(){
+    //code to run only once
+    console.log("running effect hook");
+    const initUrl = "https://api.github.com/search/repositories?q="+"react"+"&sort=stars";
+    //when the buzzer goes off, do something
+    fetch(initUrl)
+      .then(function(response) {
+        const jsonBuzzer = response.json();
+        return jsonBuzzer;
+      })
+      .then((data) => {
+        console.log(data);
+        setStateData(data.items)
+      })
+      .catch((error) => {
+        console.log("got an error");
+        console.log(error);
+      });
+  
+
+  }, []);
+
+
+
 
   const handleChange = (event) => {
     setQueryInput(event.target.value);
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("submitting form");
+
+    // let data = null;
+    // try {
+    //   const response = await fetch(url);
+    //   data = await response.json();
+    //   console.log(data);
+    // } catch(error) {
+    //   data = [];
+    // }
+    const url = "https://api.github.com/search/repositories?q="+queryInput+"&sort=stars";
+    //when the buzzer goes off, do something
+    fetch(url)
+      .then(function(response) {
+        const jsonBuzzer = response.json();
+        return jsonBuzzer;
+      })
+      .then((data) => {
+        console.log(data);
+        setStateData(data.items)
+      })
+      .catch((error) => {
+        console.log("got an error");
+        console.log(error);
+      });
+
+
+
+
+    // //when the buzzer goes off, do something
+    // buzzerPromise.then(function(response) {
+    //   console.log("buzzer buzzed - response ready");
+    //   console.log(response);
+    //   console.log(response.status);
+
+    //   const jsonBuzzer = response.json();
+    //   jsonBuzzer.then((data) => {
+    //     console.log("json buzzer buzzed - data ready");
+    //     console.log(data);
+    //   })
+
+    // })
+
+
+    //when a button is clicked, do something
+    //addEventListener('click', function(){})
+    console.log("after request sent");
+
+
 
     //do something with form input!
 
@@ -37,7 +113,7 @@ function App(props) {
     <div className="container">
       <header><h1>AJAX Demo</h1></header> 
 
-      <form method="GET" action="https://api.github.com/search/repositories">
+      <form method="GET" action="https://api.github.com/search/repositories" onSubmit={handleSubmit}>
         <input type="text" className="form-control mb-2" 
           name="q"
           placeholder="Search Github for..."
