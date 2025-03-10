@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 
+import { getApp } from "firebase/app";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'; 
+import { updateProfile } from 'firebase/auth'
+import { getDatabase, ref as dbRef, set as firebaseSet} from 'firebase/database';
+
 export default function ProfilePage(props) {
   const { currentUser } = props;
   //convenience
@@ -17,8 +22,34 @@ export default function ProfilePage(props) {
     }
   }
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = async (event) => {
     console.log("Uploading", imageFile);
+
+    //upload the image
+    const storage = getStorage(getApp(), "gs://info340-media.firebasestorage.app")
+    const imageRef = storageRef(storage, "demo/userImages/"+currentUser.uid+".png");
+    await uploadBytes(imageRef, imageFile);
+    const publicURL = await getDownloadURL(imageRef);
+
+    // const reader = new FileReader(); 
+    // reader.onload = function (e) { 
+    //    //get the read file (read as dataURL and get its url 
+    //    const dataUrl = e.currentTarget.result 
+    
+    //    //you can put this data url into the firebase db 
+    //    //firebaseSet(imgRef, dataUrl) 
+    //    console.log(dataUrl);
+    // } 
+    
+    // //call this function to read the file (and trigger the above callback)
+    // reader.readAsDataURL(imageFile) //initiate the reader
+
+    await updateProfile(currentUser, {photoURL: publicURL})
+    console.log("done");
+    //firebaseSet(imageUrlRef, publicURL )
+    const imageDbRef = dbRef(getDatabase(), 'favoriteImageUrl')
+    firebaseSet(imageDbRef, publicURL);
+
   }
 
   return (

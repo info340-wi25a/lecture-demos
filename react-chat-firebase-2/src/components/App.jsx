@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import { Routes, Route, Outlet, Navigate, useNavigate } from 'react-router-dom';
 import { getDatabase, ref, push as firebasePush, onValue } from 'firebase/database'
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 import { HeaderBar } from './HeaderBar.jsx';
 import ChatPage from './ChatPage.jsx';
@@ -17,9 +18,26 @@ function App(props) {
 
   const navigateTo = useNavigate(); //navigation hook
 
-
   //effect to run when the component first loads
   useEffect(() => {
+    //listen for user login to firebase
+    const auth = getAuth();
+    onAuthStateChanged(auth, (firebaseUser) => {
+      console.log("login status changed");
+      console.log(firebaseUser);
+      if(firebaseUser){ // if defined
+        firebaseUser.userId = firebaseUser.uid; //rename keys
+        firebaseUser.userName = firebaseUser.displayName;
+        firebaseUser.userImg = firebaseUser.photoURL || '/img/null.png';
+        
+        setCurrentUser(firebaseUser);
+      } else {
+        setCurrentUser(DEFAULT_USERS[0]);
+      }
+    });
+
+
+
     //log in a default user
     //changeUser(DEFAULT_USERS[1])
   }, []) //array is list of variables that will cause this to rerun if changed
